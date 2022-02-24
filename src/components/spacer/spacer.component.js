@@ -1,6 +1,6 @@
-import styled, { useTheme } from 'styled-components/native';
-
+import PropTypes from 'prop-types';
 import React from 'react';
+import styled, { useTheme } from 'styled-components/native';
 
 const sizeVariant = {
 	small: 1,
@@ -31,6 +31,12 @@ export const Spacer = ({ position, size, children }) => {
 	const theme = useTheme();
 	const variant = getVariant(position, size, theme);
 	return <SpacerView variant={variant}>{children}</SpacerView>;
+};
+
+Spacer.propTypes = {
+	position: PropTypes.oneOf(['top', 'left', 'right', 'bottom']),
+	size: PropTypes.oneOf(['small', 'medium', 'large']),
+	children: PropTypes.node,
 };
 
 Spacer.defaultProps = {

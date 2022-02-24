@@ -1,6 +1,6 @@
-import styled, { useTheme } from 'styled-components/native';
-
+import PropTypes from 'prop-types';
 import React from 'react';
+import styled, { useTheme } from 'styled-components/native';
 
 const defaultTextStyles = (theme) => `
   font-family: ${theme.fonts.body};
@@ -63,4 +63,9 @@ export const Text = ({ variant, children, ...otherProps }) => {
 			{children}
 		</TextVariant>
 	);
+};
+
+Text.propTypes = {
+	variant: PropTypes.oneOf(['body', 'label', 'caption', 'error', 'hint']),
+	children: PropTypes.node,
 };
