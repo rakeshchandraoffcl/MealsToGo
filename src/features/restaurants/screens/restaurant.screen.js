@@ -1,18 +1,17 @@
-import React, { useContext, useState } from 'react';
-import { FlatList, TouchableOpacity } from 'react-native';
 import { ActivityIndicator, Colors } from 'react-native-paper';
-import styled from 'styled-components/native';
-import { RestaurantFavouritesBar } from '../../../components/favourites/favourite-bar.component';
-import { Spacer } from '../../../components/spacer/spacer.component';
-import { SafeArea } from '../../../components/utility/safearea-view.component';
-import { FavouritesContext } from '../../../services/favourites/favourites.context';
-import { RestaurantContext } from '../../../services/restaurants/restaurant.context';
-import { RestaurantCardInfo } from '../components/restaurant-card.component';
-import { SearchRestaurant } from '../components/search-restaurant.component';
+import React, { useContext, useState } from 'react';
 
-const RestaurantListContainer = styled(FlatList).attrs({
-  contentContainerStyle: { paddingLeft: 16, paddingRight: 16 },
-})``;
+import { FadeInView } from '../../../components/animation/fading.animation';
+import { FavouritesContext } from '../../../services/favourites/favourites.context';
+import { RestaurantCardInfo } from '../components/restaurant-card.component';
+import { RestaurantContext } from '../../../services/restaurants/restaurant.context';
+import { RestaurantFavouritesBar } from '../../../components/favourites/favourite-bar.component';
+import { RestaurantListContainer } from '../components/restaurant-card.styles';
+import { SafeArea } from '../../../components/utility/safearea-view.component';
+import { SearchRestaurant } from '../components/search-restaurant.component';
+import { Spacer } from '../../../components/spacer/spacer.component';
+import { TouchableOpacity } from 'react-native';
+import styled from 'styled-components/native';
 
 const LoadingContainer = styled(ActivityIndicator)`
   position: absolute;
@@ -32,7 +31,9 @@ export const RestaurantScreen = ({ navigation }) => {
       }}
     >
       <Spacer position={'bottom'} size={'medium'}>
-        <RestaurantCardInfo restaurant={item} />
+        <FadeInView>
+          <RestaurantCardInfo restaurant={item} />
+        </FadeInView>
       </Spacer>
     </TouchableOpacity>
   );

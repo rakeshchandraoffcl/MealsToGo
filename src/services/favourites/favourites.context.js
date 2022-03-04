@@ -1,23 +1,29 @@
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { createContext, useCallback, useEffect, useState } from 'react';
+import { AuthenticationContext } from '../authentication/authentication.context';
 
 export const FavouritesContext = createContext();
 const SORAGE_KEY = '@favourites';
 
 export const FavouritesContextProvider = ({ children }) => {
   const [favourites, setFavourites] = useState([]);
+  const { user } = useContext(AuthenticationContext);
 
-  const storeFavs = useCallback(async () => {
-    try {
-      await AsyncStorage.setItem(SORAGE_KEY, JSON.stringify(favourites));
-    } catch (e) {
-      console.log('saving eror', e);
-    }
-  }, [favourites]);
+  const storeFavs = useCallback(
+    async (uId) => {
+      try {
+        await AsyncStorage.setItem(`${SORAGE_KEY}-${uId}`, JSON.stringify(favourites));
+      } catch (e) {
+        console.log('saving eror', e);
+      }
+    },
+    [favourites]
+  );
 
-  const getFavsData = useCallback(async () => {
+  const getFavsData = useCallback(async (uId) => {
     try {
-      const value = await AsyncStorage.getItem(SORAGE_KEY);
+      const value = await AsyncStorage.getItem(`${SORAGE_KEY}-${uId}`);
       if (value !== null) {
         setFavourites(JSON.parse(value));
       }
@@ -36,13 +42,17 @@ export const FavouritesContextProvider = ({ children }) => {
 
   // Get favourites on initial rendor
   useEffect(() => {
-    getFavsData();
-  }, [getFavsData]);
+    if (user) {
+      getFavsData(user.uid);
+    }
+  }, [getFavsData, user]);
 
   // Store favourite on favourites change
   useEffect(() => {
-    storeFavs();
-  }, [storeFavs]);
+    if (user) {
+      storeFavs(user.uid);
+    }
+  }, [storeFavs, user]);
   return (
     <FavouritesContext.Provider
       value={{
